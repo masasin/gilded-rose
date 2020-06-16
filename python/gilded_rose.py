@@ -13,7 +13,9 @@ class Item:
 
 
 class Category(Item):
-    def __init__(self, name, sell_in, quality, *, min_quality=0, max_quality=50, change=-1):
+    def __init__(self, sell_in, quality, *, name=None, min_quality=0, max_quality=50, change=-1):
+        if name is None:
+            name = self.__class__.__name__
         super().__init__(name, sell_in, quality)
         self.min_quality = min_quality
         self.max_quality = max_quality
@@ -21,7 +23,10 @@ class Category(Item):
         self.multiplier = 1 if self.sell_in > 0 else 2
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(name={self.name!r}, sell_in={self.sell_in}, quality={self.quality})"
+        if self.name != self.__class__.__name__:
+            return f"{self.__class__.__name__}(sell_in={self.sell_in}, quality={self.quality}, name={self.name!r})"
+        else:
+            return f"{self.name}(sell_in={self.sell_in}, quality={self.quality})"
 
     def _clip_quality(self, value):
         return min(max(value, self.min_quality), self.max_quality)
@@ -34,18 +39,18 @@ class Category(Item):
 
 
 class Brie(Category):
-    def __init__(self, name, sell_in, quality, change=1):
-        super().__init__(name, sell_in, quality, change=change)
+    def __init__(self, sell_in, quality, name=None):
+        super().__init__(sell_in, quality, name=name, change=1)
 
 
 class Conjured(Category):
-    def __init__(self, name, sell_in, quality, change=-2):
-        super().__init__(name, sell_in, quality, change=change)
+    def __init__(self, sell_in, quality, name=None):
+        super().__init__(sell_in, quality, name=name, change=-2)
 
 
 class Passes(Category):
-    def __init__(self, name, sell_in, quality, change=1):
-        super().__init__(name, sell_in, quality, change=change)
+    def __init__(self, sell_in, quality, name=None):
+        super().__init__(sell_in, quality, name=name, change=1)
         self.multiplier = 1 if self.sell_in > 10 else 2 if self.sell_in > 5 else 3
 
     def _next_quality(self):
@@ -55,8 +60,8 @@ class Passes(Category):
 
 
 class Sulfuras(Category):
-    def __init__(self, name, sell_in, quality):
-        super().__init__(name, sell_in, quality, min_quality=80, max_quality=80, change=0)
+    def __init__(self, sell_in, quality, name=None):
+        super().__init__(sell_in, quality, name=name, min_quality=80, max_quality=80, change=0)
 
 
 class GildedRose:
