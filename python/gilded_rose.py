@@ -46,7 +46,7 @@ class Conjured(Category):
 class Passes(Category):
     def __init__(self, name, sell_in, quality, change=1):
         super().__init__(name, sell_in, quality, change=change)
-        self.multiplier = 3 if self.sell_in <= 5 else 2 if self.sell_in <= 10 else 1
+        self.multiplier = 1 if self.sell_in > 10 else 2 if self.sell_in > 5 else 3
 
     def _next_quality(self):
         if self.sell_in <= 0:
