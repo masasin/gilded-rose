@@ -1,43 +1,41 @@
 # -*- coding: utf-8 -*-
 class GildedRose:
+    categories = {
+        "Magical foo": "other",
+        "Aged Brie": "brie",
+        "Backstage passes to a TAFKAL80ETC concert": "passes",
+        "Sulfuras, Hand of Ragnaros": "sulfuras",
+        "Conjured Mana Cake": "conjured",
+    }
+
+    changes = {
+        "passes": 1,
+        "brie": 1,
+        "conjured": -2,
+        "other": -1,
+    }
+
     def __init__(self, items):
         self.items = items
 
+    @staticmethod
+    def _clip(value, min_=0, max_=50):
+        return min(max(value, min_), max_)
+
     def update_quality(self):
         for item in self.items:
-            if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if item.quality > 0:
-                    if item.name != "Sulfuras, Hand of Ragnaros":
-                        if item.name == "Conjured Mana Cake":
-                            item.quality = max(item.quality - 2, 0)
-                        else:
-                            item.quality = item.quality - 1
+            category = self.categories[item.name]
+            if category == "sulfuras":
+                continue
+            change = self.changes.get(category)
+            if category == "passes":
+                if item.sell_in <= 0:
+                    item.quality = 0
+                    continue
+                multiplier = max(1, (20 - item.sell_in) // 5)
             else:
-                if item.quality < 50:
-                    item.quality = item.quality + 1
-                    if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                        if item.sell_in < 11:
-                            if item.quality < 50:
-                                item.quality = item.quality + 1
-                        if item.sell_in < 6:
-                            if item.quality < 50:
-                                item.quality = item.quality + 1
-            if item.name != "Sulfuras, Hand of Ragnaros":
-                item.sell_in = item.sell_in - 1
-            if item.sell_in < 0:
-                if item.name != "Aged Brie":
-                    if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                        if item.quality > 0:
-                            if item.name != "Sulfuras, Hand of Ragnaros":
-                                if item.name == "Conjured Mana Cake":
-                                    item.quality = max(item.quality - 2, 0)
-                                else:
-                                    item.quality = item.quality - 1
-                    else:
-                        item.quality = item.quality - item.quality
-                else:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
+                multiplier = 1 if item.sell_in >= 1 else 2
+            item.quality = self._clip(item.quality + change * multiplier)
 
 
 class Item:
