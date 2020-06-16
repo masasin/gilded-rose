@@ -2,15 +2,6 @@
 from typing import List
 
 
-class GildedRose:
-    def __init__(self, items: List["Category"]):
-        self.items = items
-
-    def update_quality(self):
-        for item in self.items:
-            item.update_quality()
-
-
 class Item:
     def __init__(self, name, sell_in, quality):
         self.name = name
@@ -72,3 +63,12 @@ class Passes(Category):
 class Sulfuras(Category):
     def __init__(self, name, sell_in, quality):
         super().__init__(name, sell_in, quality, min_quality=80, max_quality=80, change=0)
+
+
+class GildedRose:
+    def __init__(self, items: List[Category]):
+        self.items = items
+
+    def update_quality(self):
+        for item in self.items:
+            item.update_quality()
