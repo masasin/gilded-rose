@@ -18,13 +18,10 @@ class Category(Item):
         self.min_quality = min_quality
         self.max_quality = max_quality
         self.change = change
+        self.multiplier = 1 if self.sell_in > 0 else 2
 
     def __repr__(self):
         return f"{self.__class__.__name__}(name={self.name!r}, sell_in={self.sell_in}, quality={self.quality})"
-
-    @property
-    def multiplier(self):
-        return 1 if self.sell_in > 0 else 2
 
     def _clip_quality(self, value):
         return min(max(value, self.min_quality), self.max_quality)
@@ -49,15 +46,12 @@ class Conjured(Category):
 class Passes(Category):
     def __init__(self, name, sell_in, quality, change=1):
         super().__init__(name, sell_in, quality, change=change)
+        self.multiplier = max(1, (20 - self.sell_in) // 5)
 
     def _next_quality(self):
         if self.sell_in <= 0:
             return 0
         return super()._next_quality()
-
-    @property
-    def multiplier(self):
-        return max(1, (20 - self.sell_in) // 5)
 
 
 class Sulfuras(Category):
