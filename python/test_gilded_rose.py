@@ -51,13 +51,13 @@ items_to_try = [
     [Item(FOR_SALE["sulfuras"], -10, 80), 80],
 
     # Conjured items decrease at double rate
-    # [Item(FOR_SALE["conjured"], 10, 8), 6],
-    # [Item(FOR_SALE["conjured"], 0, 8), 4],
-    # [Item(FOR_SALE["conjured"], -1, 8), 4],
-    # [Item(FOR_SALE["conjured"], 10, 1), 0],
-    # [Item(FOR_SALE["conjured"], 10, 0), 0],
-    # [Item(FOR_SALE["conjured"], -1, 1), 0],
-    # [Item(FOR_SALE["conjured"], -1, 0), 0],
+    [Item(FOR_SALE["conjured"], 10, 8), 6],
+    [Item(FOR_SALE["conjured"], 0, 8), 4],
+    [Item(FOR_SALE["conjured"], -1, 8), 4],
+    [Item(FOR_SALE["conjured"], 10, 1), 0],
+    [Item(FOR_SALE["conjured"], 10, 0), 0],
+    [Item(FOR_SALE["conjured"], -1, 1), 0],
+    [Item(FOR_SALE["conjured"], -1, 0), 0],
 ]
 
 item_ids = [f"Item({item.name}, sell_in={item.sell_in}, quality={item.quality}) -> {next_quality}"
