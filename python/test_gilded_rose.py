@@ -52,10 +52,8 @@ items_to_try = [
     [Conjured(-1, 0), 0],
 ]
 
-item_ids = [f"{item} -> {next_quality}" for item, next_quality in items_to_try]
 
-
-@pytest.mark.parametrize(["item", "next_quality"], items_to_try, ids=item_ids)
+@pytest.mark.parametrize(["item", "next_quality"], items_to_try, ids=str)
 def test_next_quality(item, next_quality):
     gilded_rose = GildedRose([item])
     gilded_rose.update_quality()
